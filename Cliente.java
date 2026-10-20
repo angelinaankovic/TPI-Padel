@@ -32,9 +32,7 @@ public class Cliente extends Persona {
             System.out.println("No tenés reservas registradas.");
         }
     }
-    public double calcularDeuda(){
-
-    }
+    
 
 
 
@@ -45,4 +43,4 @@ public class Cliente extends Persona {
 
 }
 
-// Metodos propios de la clase
+
