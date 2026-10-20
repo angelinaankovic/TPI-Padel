@@ -1,3 +1,3 @@
 public enum RolEmpleado {
-    GERENTE,ADMINISTRACION,CAJA
+    RECEPCIONISTA,ENCARGADO
 }

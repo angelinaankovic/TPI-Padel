@@ -50,6 +50,30 @@ public class Reserva
     
         this.horaInicio = java.time.LocalTime.parse(horaInicioNueva);
     }
+
+    public int getIdReserva(){
+        return this.idReserva;
+    }
+
+    public LocalDate getFecha(){
+        return this.fecha;
+    }
+
+    public LocalTime getHoraInicio(){
+        return this.horaInicio;
+    }
+
+    public Cliente getCliente(){
+        return this.cliente;
+    }
+
+    public Cancha getCancha(){
+        return this.cancha;
+    }
+
+    public int getDuracionMinutos(){
+        return this.duracionMinutos;
+    }
     
     public LocalTime horaFin(){
     

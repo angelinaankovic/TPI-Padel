@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+
 public class GestorReserva {
     private Reserva idReserva;
     private ArrayList<Reserva> reservas;
@@ -18,6 +19,7 @@ public class GestorReserva {
     public void agregarReserva(Reserva r){
         this.reservas.add(r);
     }
+
     public ArrayList<Reserva> verListaReservas(){
         return this.reservas;
     }

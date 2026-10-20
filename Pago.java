@@ -6,7 +6,7 @@ public class Pago {
     private TipoPago tipoPago;
     private MedioPago medioPago;
     private LocalDate fechaPago;
-    private EstadoPago estadoPago;//Falta crear los 3 enums
+    private EstadoPago estadoPago;
 
     public Pago(int idPago, Reserva idReserva, double monto, TipoPago tipoPago, MedioPago medioPago, LocalDate fechaPago,EstadoPago estadoPago){
 
