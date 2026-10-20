@@ -39,4 +39,9 @@ public abstract class Persona {
     public void setDni(int dni) {
         this.dni = dni;
     }
+
+    //Actualizar datos
+    public void actualizarDatos(){
+        
+    }
 }
