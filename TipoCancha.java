@@ -1,20 +1,17 @@
-public enum TipoCancha {
-    
-    PARED(35000.0),    // Precio base para canchas de pared
-    BLINDEX(45000.0);  // Precio base para canchas de blindex (más caras)
-    
-    private double precioBase;
-    
-    // Constructor del Enum
-    TipoCancha(double precioBase) {
-        this.precioBase = precioBase;
+enum  TipoCancha {
+    PARED(35000), BLINDEX(45000);
+
+    private double precio;
+
+    TipoCancha(double precio) {
+        this.precio = precio;
     }
-    
-    // Getter para obtener el precio
-    public double getPrecioBase() {
-        return precioBase;
+
+    public double getPrecio() {
+        return precio;
     }
-    public void setPrecioBase(double nuevoPrecio){
-        this.precioBase = nuevoPrecio;
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
 }

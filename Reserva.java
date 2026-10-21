@@ -1,109 +1,92 @@
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.Duration;
 
-public class Reserva
-{
-    
-    private int idReserva;
-    private int duracionMinutos = 120;
-    private LocalDate fecha;
-    private LocalTime horaInicio; 
-    private LocalTime horaFin;
-    private double monto;
+public class Reserva {
+    private int numero;
     private Cliente cliente;
     private Cancha cancha;
-    private int cantJugadores;
-    
-    
-    
-    public Reserva()
-    {
-        
-    }
+    private LocalDate fecha;
+    private LocalTime hora;
+    private double monto;
+    private String estado;
+    private Pago sena;
 
-    public Reserva(int idReserva, String fechaTexto, String horaInicioTexto, double monto, Cliente cliente, Cancha cancha, int cantJugadores){
-    
-        this.idReserva = idReserva;
-        this.fecha = java.time.LocalDate.parse(fechaTexto);
-        this.horaInicio = java.time.LocalTime.parse(horaInicioTexto);
-        this.monto = monto;
+    public Reserva(int numero, Cliente cliente, Cancha cancha, LocalDate fecha,
+                   LocalTime hora, MedioPago medio) {
+        this.numero = numero;
         this.cliente = cliente;
         this.cancha = cancha;
-        this.cantJugadores = cantJugadores;
-        
-    }
-    
-
-    
-    public void modificarPrecio(double precio){
-    
-    this.monto = precio;
-    }
-    
-    public void modificarFecha(String fechaNueva){
-    
-    this.fecha = java.time.LocalDate.parse(fechaNueva);
-    
-    }
-    
-    public void modificarHoraInicio(String horaInicioNueva){
-    
-        this.horaInicio = java.time.LocalTime.parse(horaInicioNueva);
+        this.fecha = fecha;
+        this.hora = hora;
+        this.monto = cancha.getPrecio();
+        this.estado = "CONFIRMADA";
+        this.sena = new Pago(monto * 0.5, "SEÑA", medio);
     }
 
-    public int getIdReserva(){
-        return this.idReserva;
+    public boolean seSuperpone(LocalDate otraFecha, LocalTime otraHora) {
+        if (!fecha.equals(otraFecha) || estado.equals("CANCELADA") || estado.equals("AUSENTE") || estado.equals("COMPLETADA")) {
+            return false;
+        }
+
+        int inicio = hora.toSecondOfDay() / 60;
+        int otroInicio = otraHora.toSecondOfDay() / 60;
+        return Math.abs(inicio - otroInicio) < 120;
     }
 
-    public LocalDate getFecha(){
-        return this.fecha;
+    public void cancelar(LocalDateTime ahora) {
+        if (!estado.equals("CONFIRMADA")) {
+            System.out.println("La reserva no se puede cancelar.");
+            return;
+        }
+
+        LocalDateTime inicioTurno = LocalDateTime.of(fecha, hora);
+        long horas = Duration.between(ahora, inicioTurno).toHours();
+
+        if (horas >= 24) {
+            sena.reembolsar();
+        } else {
+            sena.retener();
+        }
+        estado = "CANCELADA";
     }
 
-    public LocalTime getHoraInicio(){
-        return this.horaInicio;
+    public void registrarAsistencia(boolean asistio, MedioPago medioSaldo) {
+        if (!estado.equals("CONFIRMADA")) {
+            System.out.println("La reserva ya fue cerrada.");
+            return;
+        }
+
+        if (asistio) {
+            new Pago(monto * 0.5, "SALDO", medioSaldo);
+            estado = "COMPLETADA";
+        } else {
+            sena.retener();
+            cliente.registrarInasistencia();
+            estado = "AUSENTE";
+        }
     }
 
-    public Cliente getCliente(){
-        return this.cliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public Cancha getCancha(){
-        return this.cancha;
+    public Cancha getCancha() {
+        return cancha;
     }
 
-    public int getDuracionMinutos(){
-        return this.duracionMinutos;
+    public LocalDate getFecha() {
+        return fecha;
     }
-    
-    public LocalTime horaFin(){
-    
-    return horaFin = horaInicio.plusMinutes(duracionMinutos);
-    
+
+    public LocalTime getHora() {
+        return hora;
     }
-    public void registarCliente(){
-        System.out.println("--------Registro de Cliente---------");
-        System.out.println("");
-        System.out.println("Nombre: " + this.cliente.getNombre());
-        System.out.println("Apellido: " + this.cliente.getApellido());
-        System.out.println("Teléfono: " + this.cliente.getTelefono());
-        System.out.println("DNI: " + this.cliente.getDni());
-    }
-    
-    
-    public void registrarReserva(Pago pagado){
-    if (pagado.estadoSeña() == true){
-    System.out.println("-----------RESERVA--------------");
-    System.out.println("ID de Reserva: " + this.idReserva);
-    System.out.println("Cliente: " + this.cliente.getNombre());
-    System.out.println("Fecha del partido: " + this.fecha);
-    System.out.println("Hora de inicio del partido: " + this.horaInicio);
-    System.out.println("Duración del partido: " + duracionMinutos);
-    System.out.println("Juegan en la cancha: " + this.cancha.getNumeroCancha());
-    System.out.println("Cantidad de Jugadores: " + this.cantJugadores);
-    cambiarEstadoCancha();
-    }
-    else{
-        System.out.println("El cliente no confirmo su reserva debido a la falta de pago de la seña");
-    }
+
+    @Override
+    public String toString() {
+        return "Reserva " + numero + " | " + cancha + " | " + fecha + " " + hora
+                + " | " + cliente.getNombreCompleto() + " | $" + monto + " | " + estado;
     }
 }

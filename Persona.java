@@ -1,9 +1,8 @@
-public abstract class Persona {
-    
-    protected String nombre;
-    protected String apellido;
-    protected String telefono;
-    protected int dni;
+public class Persona {
+    private String nombre;
+    private String apellido;
+    private String telefono;
+    private int dni;
 
     public Persona(String nombre, String apellido, String telefono, int dni) {
         this.nombre = nombre;
@@ -11,37 +10,12 @@ public abstract class Persona {
         this.telefono = telefono;
         this.dni = dni;
     }
-    
-//GETTERS COMUNES
-    public String getNombre() {
-        return nombre;
-    }
-    public String getApellido() {
-        return apellido;
-    }
-    public String getTelefono() {
-        return telefono;
-    }
-    public int getDni() {
-        return dni;
-    }
-    
-//SETTERS COMUNES
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-    public void setDni(int dni) {
-        this.dni = dni;
+
+    public String getNombreCompleto() {
+        return nombre + " " + apellido;
     }
 
-    //Actualizar datos
-    public void actualizarDatos(){
-        
+    public int getDni() {
+        return dni;
     }
 }

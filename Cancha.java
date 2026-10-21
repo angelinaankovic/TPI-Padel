@@ -4,35 +4,45 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class Cancha {
-    private TipoCancha tipoCancha;
-    private int numeroCancha;
-    private boolean disponible;
+    private int numero;
+    private TipoCancha tipo;
+    private boolean disponibilidad;
 
-    public Cancha(int numeroCancha, boolean disponible, TipoCancha tipoCancha){
-
-        this.numeroCancha = numeroCancha;
-        this.tipoCancha = tipoCancha;
-        this.disponible = disponible;
-
+    public Cancha(int numero, TipoCancha tipo,boolean disponibilidad) {
+        this.numero = numero;
+        this.tipo = tipo;
+        this.disponibilidad = disponibilidad;
     }
-    public TipoCancha getTipoCancha(){
-        return this.tipoCancha;
-    }
-    public int getNumeroCancha(){
 
-        return this.numeroCancha;
+    public int getNumero() {
+        return numero;
     }
+
+    public boolean getDisponibilidad(){
+        return this.disponibilidad;
+    }
+
+    public TipoCancha getTipo() {
+        return tipo;
+    }
+
+    public double getPrecio() {
+        return tipo.getPrecio();
+    }
+
     public void cambiarDisponibilidad(){
 
-        if(this.disponible == true){
-             this.disponible = false;
+        if(this.disponibilidad == true){
+             this.disponibilidad = false;
         }
-        else if (this.disponible == false){
-            this.disponible = true;
+        else if (this.disponibilidad == false){
+            this.disponibilidad = true;
         }
     }
+
+    
     public boolean estaDisponible(LocalDate fecha, LocalTime hora, List<Reserva> reservas){
-        if (!this.disponible){
+        if (!this.disponibilidad){
             return false;
         }
 
@@ -46,9 +56,9 @@ public class Cancha {
 
             LocalDateTime inicioReserva = LocalDateTime.of(
                 reserva.getFecha(),
-                reserva.getHoraInicio()
+                reserva.getHora()
             );
-            LocalDateTime finReserva = inicioReserva.plusMinutes(reserva.getDuracionMinutos());
+            LocalDateTime finReserva = inicioReserva.plusMinutes(120);
 
             if (inicioSolicitado.isBefore(finReserva) && finSolicitado.isAfter(inicioReserva)){
                 return false;
@@ -57,4 +67,12 @@ public class Cancha {
 
         return true;
     }
+
+    @Override
+    public String toString() {
+    return "Cancha " + numero + " (" + tipo + ")";
+    }
+    
 }
+
+
